@@ -5,12 +5,16 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +82,9 @@ public class MainActivity extends BaseActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Apply theme styling
+        applyThemeStyles();
+
         setupManagersAndHandlers();
 
         AnimationHelper.prepareInitialStates(binding);
@@ -85,7 +92,6 @@ public class MainActivity extends BaseActivity {
 
         setTextMinecraftVersion();
         updateViewModelVersion();
-
 
         checkResourcepack();
         handleIncomingFiles();
@@ -100,6 +106,77 @@ public class MainActivity extends BaseActivity {
         showEulaIfNeeded();
 
         initModsRecycler();
+    }
+
+    private void applyThemeStyles() {
+        // Set dark background
+        binding.getRoot().setBackgroundColor(Color.parseColor("#0a0a0a"));
+        
+        // Style buttons
+        styleButton(binding.launchButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleButton(binding.selectVersionButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleButton(binding.importApkButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleButton(binding.addModButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleButton(binding.deleteVersionButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        
+        // Style text views
+        binding.textMinecraftVersion.setTextColor(Color.WHITE);
+        binding.abiLabel.setTextColor(Color.WHITE);
+        binding.modsTitleText.setTextColor(Color.WHITE);
+        binding.aboutCardTitle.setTextColor(Color.parseColor("#ff6666"));
+        binding.modCardTitle.setTextColor(Color.parseColor("#ff6666"));
+        binding.mainCardTitle.setTextColor(Color.parseColor("#ff6666"));
+        
+        // Style cards
+        styleCard(binding.mainCard, Color.parseColor("#1e1e1e"), Color.parseColor("#ff4d4d"));
+        styleCard(binding.modCard, Color.parseColor("#1e1e1e"), Color.parseColor("#ff4d4d"));
+        styleCard(binding.aboutCard, Color.parseColor("#1e1e1e"), Color.parseColor("#ff4d4d"));
+        
+        // Style progress bar
+        binding.progressLoader.getIndeterminateDrawable().setColorFilter(
+            Color.parseColor("#ff4d4d"), 
+            android.graphics.PorterDuff.Mode.SRC_IN
+        );
+        
+        // Style GitHub icon
+        binding.githubIcon.setColorFilter(Color.WHITE);
+    }
+
+    private void styleButton(Button button, int startColor, int endColor) {
+        // Create gradient background
+        GradientDrawable gradient = new GradientDrawable(
+            GradientDrawable.Orientation.LEFT_RIGHT,
+            new int[]{startColor, endColor}
+        );
+        gradient.setCornerRadius(dpToPx(30));
+        
+        // Set shadow
+        button.setElevation(dpToPx(4));
+        
+        // Set button properties
+        button.setBackground(gradient);
+        button.setTextColor(Color.WHITE);
+        button.setAllCaps(false);
+    }
+
+    private void styleCard(View card, int backgroundColor, int borderColor) {
+        // Create card background
+        GradientDrawable background = new GradientDrawable();
+        background.setColor(backgroundColor);
+        background.setCornerRadius(dpToPx(15));
+        background.setStroke(dpToPx(2), borderColor);
+        
+        // Apply styling
+        card.setBackground(background);
+        card.setElevation(dpToPx(6));
+    }
+
+    private int dpToPx(int dp) {
+        return (int) TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 
+            dp, 
+            getResources().getDisplayMetrics()
+        );
     }
 
     private void setupManagersAndHandlers() {
