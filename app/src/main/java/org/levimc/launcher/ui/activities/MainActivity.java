@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,18 +115,15 @@ public class MainActivity extends BaseActivity {
         
         // Style buttons
         styleButton(binding.launchButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
-        styleButton(binding.selectVersionButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
-        styleButton(binding.importApkButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
-        styleButton(binding.addModButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
-        styleButton(binding.deleteVersionButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleImageButton(binding.selectVersionButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleImageButton(binding.importApkButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleImageButton(binding.addModButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
+        styleImageButton(binding.deleteVersionButton, Color.parseColor("#ff4d4d"), Color.parseColor("#e04444"));
         
         // Style text views
         binding.textMinecraftVersion.setTextColor(Color.WHITE);
         binding.abiLabel.setTextColor(Color.WHITE);
         binding.modsTitleText.setTextColor(Color.WHITE);
-        binding.aboutCardTitle.setTextColor(Color.parseColor("#ff6666"));
-        binding.modCardTitle.setTextColor(Color.parseColor("#ff6666"));
-        binding.mainCardTitle.setTextColor(Color.parseColor("#ff6666"));
         
         // Style cards
         styleCard(binding.mainCard, Color.parseColor("#1e1e1e"), Color.parseColor("#ff4d4d"));
@@ -157,6 +155,21 @@ public class MainActivity extends BaseActivity {
         button.setBackground(gradient);
         button.setTextColor(Color.WHITE);
         button.setAllCaps(false);
+    }
+
+    private void styleImageButton(ImageButton button, int startColor, int endColor) {
+        // Create gradient background
+        GradientDrawable gradient = new GradientDrawable(
+            GradientDrawable.Orientation.LEFT_RIGHT,
+            new int[]{startColor, endColor}
+        );
+        gradient.setCornerRadius(dpToPx(30));
+        
+        // Set shadow
+        button.setElevation(dpToPx(4));
+        
+        // Set button properties
+        button.setBackground(gradient);
     }
 
     private void styleCard(View card, int backgroundColor, int borderColor) {
